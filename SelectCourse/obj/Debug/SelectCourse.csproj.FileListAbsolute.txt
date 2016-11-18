@@ -1,0 +1,10 @@
+D:\我的文档\c#\SelectCourse\SelectCourse\bin\Debug\SelectCourse.exe.config
+D:\我的文档\c#\SelectCourse\SelectCourse\bin\Debug\SelectCourse.exe
+D:\我的文档\c#\SelectCourse\SelectCourse\bin\Debug\SelectCourse.pdb
+D:\我的文档\c#\SelectCourse\SelectCourse\obj\Debug\SelectCourse.Form1.resources
+D:\我的文档\c#\SelectCourse\SelectCourse\obj\Debug\SelectCourse.Properties.Resources.resources
+D:\我的文档\c#\SelectCourse\SelectCourse\obj\Debug\SelectCourse.csproj.GenerateResource.Cache
+D:\我的文档\c#\SelectCourse\SelectCourse\obj\Debug\SelectCourse.exe
+D:\我的文档\c#\SelectCourse\SelectCourse\obj\Debug\SelectCourse.pdb
+D:\我的文档\c#\SelectCourse\SelectCourse\obj\Debug\SelectCourse.csprojResolveAssemblyReference.cache
+D:\我的文档\c#\SelectCourse\SelectCourse\obj\Debug\SelectCourse.PersonSchedule.resources
