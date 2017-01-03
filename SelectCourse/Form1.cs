@@ -195,21 +195,27 @@ namespace SelectCourse
 
         private void Form1_Load(object sender, EventArgs e)
         {
+
+
+            Microsoft.Win32.RegistryKey softwareXXX = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("selectcourse");
+            
+            try
+            {
+                textBox3.Text = softwareXXX.GetValue("username").ToString();
+                textBox4.Text = softwareXXX.GetValue("password").ToString();
+                textBox8.Text = softwareXXX.GetValue("ccode").ToString();
+                textBox2.Text = softwareXXX.GetValue("scode").ToString();
+            }
+            catch { }
             LoginCookie = ReadCookiesFromDisk("cookie.txt");
             comboBox3.SelectedIndex = 2;
+
         }
 
 
 
         private void button3_Click(object sender, EventArgs e)
         {
-            Microsoft.Win32.RegistryKey softwareXXX = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("selectcourse");
-            try
-            {
-                textBox3.Text = softwareXXX.GetValue("username").ToString();
-                textBox4.Text = softwareXXX.GetValue("password").ToString();
-            }
-            catch { }
 
             //MessageBox.Show(ParseUrl(GetHtml("http://sep.ucas.ac.cn/portal/site/226")));
             try
@@ -458,10 +464,10 @@ namespace SelectCourse
 
         }
 
-        public void CourseQuery()
+        public void CourseQuery(string deptids)
         {
             comboBox2.Items.Clear();
-            string coursedata = PostData("http://jwxk.ucas.ac.cn/courseManage/selectCourse" + sid, "deptIds=" + comboBox1.SelectedItem.ToString().Substring(comboBox1.SelectedItem.ToString().LastIndexOf("-") + 1) + "&sb=0");
+            string coursedata = PostData("http://jwxk.ucas.ac.cn/courseManage/selectCourse" + sid, "deptIds=" + deptids + "&sb=0");
             textBox1.Text = coursedata;
             Regex pattern = new Regex(@"action=""/courseManage/selectCourse([\w\W]+?)""");
             Match matchMode = pattern.Match(coursedata);
@@ -477,7 +483,13 @@ namespace SelectCourse
             {
                 comboBox2.Items.Add(item.Groups[2].Value + "-" + item.Groups[1].Value);
             }
-            comboBox2.SelectedIndex = 0;
+            if (comboBox2.Items.Count != 0)
+            {
+                comboBox2.SelectedIndex = 0;
+                button2.Enabled = true;
+            }
+            else
+                textBox1.Text="未找到课程...";
 
         }
 
@@ -504,7 +516,11 @@ namespace SelectCourse
         private void button2_Click(object sender, EventArgs e)
         {
             try{
-                
+                if (comboBox2.SelectedIndex == -1)
+                {
+                    MessageBox.Show("请选择课程");
+                    return;
+                }
                 if (checkBox2.Checked)
                     SelectCourse("deptIds=" + comboBox1.SelectedItem.ToString().Substring(comboBox1.SelectedItem.ToString().LastIndexOf("-") + 1) + "&sids=" + comboBox2.SelectedItem.ToString().Substring(comboBox2.SelectedItem.ToString().LastIndexOf("-") + 1) + "&did_" + comboBox2.SelectedItem.ToString().Substring(comboBox2.SelectedItem.ToString().LastIndexOf("-") + 1) + "=" + comboBox2.SelectedItem.ToString().Substring(comboBox2.SelectedItem.ToString().LastIndexOf("-") + 1));
                 else
@@ -525,11 +541,9 @@ namespace SelectCourse
 
         private void button6_Click(object sender, EventArgs e)
         {
-            try{
-                CourseQuery();
-                button2.Enabled = true;
-
-                
+            try
+            {
+                CourseQuery(comboBox1.SelectedItem.ToString().Substring(comboBox1.SelectedItem.ToString().LastIndexOf("-") + 1));
             }
             catch { MessageBox.Show("连接超时...请重试..."); }
         }
@@ -570,7 +584,6 @@ namespace SelectCourse
 
         private void button7_Click(object sender, EventArgs e)
         {
-            
             string str = GetHtml("http://jwxk.ucas.ac.cn/course/termSchedule");
             
             Regex reg = new Regex (@"<a href=""/course/courseplan/([\w\W]*?)"" target=""_blank"">([\w\W]*?)</a>[\w\W]*?<a href=""/course/coursetime/[\w\W]*?"" target=""_blank"">([\w\W]*?)</a>");
@@ -597,13 +610,44 @@ namespace SelectCourse
             
         }
 
-        private void button8_Click(object sender, EventArgs e)
+        private void button9_Click(object sender, EventArgs e)
         {
+            if (textBox3.Text == "" || textBox4.Text == "")
+            {
+                MessageBox.Show("请先输入账号密码登陆...");
+                textBox3.Visible = true;
+                textBox4.Visible = true;
+                button1.Enabled = true;
+                return;
+            }
+
             try
             {
-                SelectCourse(textBox2.Text);
+                textBox1.Text = Login(textBox3.Text, textBox4.Text);
+                string h = GetIdentity("http://sep.ucas.ac.cn/portal/site/226/821");
+                string hurl = ParseUrl(h).Trim();
+                textBox1.Text = GetHtml(hurl);
+
+                Microsoft.Win32.RegistryKey softwareXXX = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("selectcourse", true);
+                if (softwareXXX != null)
+                {
+                    softwareXXX.SetValue("ccode", textBox8.Text);
+                    softwareXXX.SetValue("scode", textBox2.Text);
+                }
+
+                if (textBox1.Text.IndexOf("退出系统") < 1)
+                {
+                    MessageBox.Show("error...");
+                }
+                else
+                {
+                    CollegeQuery();
+                    CourseQuery(textBox8.Text);
+                    SelectCourse(textBox2.Text);
+                }
+
             }
-            catch { MessageBox.Show("发送错误...请重试..."); }
+            catch { MessageBox.Show("连接超时...请重试..."); }
         }
 
 

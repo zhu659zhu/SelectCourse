@@ -290,6 +290,9 @@ table th[class*="span"],
 &lt;body&gt;
 &lt;table class='table table-striped table-bordered table-advance table-hover'&gt;&lt;thead&gt;&lt;tr&gt; &lt;th&gt;节次/星期&lt;/th&gt; &lt;th&gt;星期一&lt;/th&gt; &lt;th&gt;星期二&lt;/th&gt;  &lt;th&gt;星期三&lt;/th&gt;  &lt;th&gt;星期四&lt;/th&gt;  &lt;th&gt;星期五&lt;/th&gt;  &lt;th&gt;星期六&lt;/th&gt;  &lt;th&gt;星期日&lt;/th&gt; &lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;</value>
   </data>
+  <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>46</value>
+  </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
